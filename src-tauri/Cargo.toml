@@ -5,8 +5,8 @@ description = "My starter for Tauri template with Nuxt"
 authors = ["Mon Albert Gamil <mrgamilmonalbert@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/xcvzmoon/tauri-starter"
-edition = "2021"
-rust-version = "1.77.2"
+edition = "2024"
+rust-version = "1.96.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
