@@ -16,6 +16,21 @@ This is my personal Tauri with Nuxt starter template for quickly bootstrapping n
 - Rolldown-powered Vite setup via the top-level `vite` override
 - Bun-first package manager, scripts, lockfile, and CI setup
 
+## Prerequisites
+
+Install these before scaffolding or running the app:
+
+- Bun `1.3.14` or newer. This template is Bun-first and pins `packageManager` to `bun@1.3.14`.
+- Rust toolchain `1.96.0` or newer with Cargo.
+- Tauri 2 system dependencies for your OS, including the required WebView/runtime and native build tools.
+  See the Tauri prerequisites guide: <https://v2.tauri.app/start/prerequisites/>.
+- Git, for scaffolding from GitHub and using the release helpers.
+
+Optional, depending on what you run:
+
+- Playwright browsers for end-to-end tests: `bunx playwright install`.
+- Platform signing credentials if you publish signed macOS or Windows releases.
+
 ## Scaffold A Project
 
 Recommended with Bun:
