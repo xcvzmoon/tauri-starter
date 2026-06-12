@@ -2,97 +2,94 @@
 
 [![CI](https://github.com/xcvzmoon/tauri-starter/actions/workflows/ci.yaml/badge.svg)](https://github.com/xcvzmoon/tauri-starter/actions/workflows/ci.yaml)
 
-This is my personal Tauri with Nuxt starter template for quickly bootstrapping new desktop application
+This is my personal Tauri with Nuxt starter template for quickly bootstrapping new desktop applications.
 
 ## Features
 
 - Nuxt 4 + Vue 3 + TypeScript
+- Tauri 2 desktop app shell
 - UI with `@nuxt/ui`
 - Formatter with `oxfmt`
 - Linter with `oxlint` and `oxlint-tsgolint`
 - Typechecking with `nuxt typecheck`
 - Testing with Vitest unit tests, Nuxt runtime/component tests, Playwright e2e tests, and Playwright UI mode
-- Rolldown-powered Vite setup via the `vite` override in `pnpm`
+- Rolldown-powered Vite setup via the top-level `vite` override
+- Bun-first package manager, scripts, lockfile, and CI setup
 
 ## Scaffold A Project
 
-Recommended with pnpm:
+Recommended with Bun:
 
 ```bash
-pnpx giget@latest gh:xcvzmoon/tauri-starter my-app --install
+bunx giget@latest gh:xcvzmoon/tauri-starter my-app --install
 ```
 
 If you prefer to install dependencies yourself after scaffolding:
 
 ```bash
-pnpx giget@latest gh:xcvzmoon/tauri-starter my-app
+bunx giget@latest gh:xcvzmoon/tauri-starter my-app
 cd my-app
-pnpm install
+bun install
 ```
 
 ## Package Manager Support
 
-This template is configured for `pnpm` first.
+This template is configured for Bun first.
 
-- `packageManager` in `package.json` is pinned to `pnpm@11.5.0`.
-- Day-to-day commands in the repo use `pnpm`.
-- Husky, `lint-staged`, lockfile behavior, and agent docs are all written with `pnpm` in mind.
-- This repo was initially set up with `pnpm`, and some checked-in files contain `pnpm`-specific configuration.
-- Notable `pnpm`-specific files include `.github/workflows/ci.yml`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, and `renovate.json`.
-- Those files contain commands or settings that only work as-is with `pnpm`, such as CI install/cache steps, `pnpm` lockfile maintenance, `pnpmDedupe`, workspace settings, and the `pnpm`-scoped Vite override.
-- Some package-manager-specific behavior may differ if you use Bun, npm, or Yarn.
+- `packageManager` in `package.json` is pinned to `bun@1.3.14`.
+- Day-to-day commands in the repo use `bun` and `bun run`.
+- The checked-in lockfile is `bun.lock`.
+- CI uses `oven-sh/setup-bun` and installs dependencies with Bun.
+- Release helper scripts in `scripts/` run directly with Bun and use Bun-native APIs.
+- Tauri `beforeDevCommand` and `beforeBuildCommand` use Bun commands.
 
-Other package managers can still work for local development, but treat them as best-effort rather than the primary supported path.
+Other package managers may work, but they are not the primary supported path for this template.
 
 ## Install Dependencies
-
-### pnpm
-
-```bash
-pnpm install
-```
-
-### Bun
 
 ```bash
 bun install
 ```
 
-### npm
-
-```bash
-npm install
-```
-
-### Yarn
-
-```bash
-yarn install
-```
-
 ## Common Commands
 
 ```bash
-pnpm dev
-pnpm build
-pnpm preview
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm test:unit
-pnpm test:nuxt
-pnpm test:e2e
-pnpm test:e2e:ui
+bun run dev
+bun run build
+bun run generate
+bun run preview
+bun run fmt
+bun run lint
+bun run typecheck
+bun run test
+bun run test:unit
+bun run test:nuxt
+bun run test:e2e
+bun run test:e2e:ui
 ```
+
+## Tauri Commands
+
+From the repository root, you can run Tauri through Bun:
+
+```bash
+bunx tauri dev
+bunx tauri build
+```
+
+The Tauri config uses:
+
+- `bun run dev` before development
+- `bun run generate` before production builds
 
 ## Releases
 
 Release commands use `changelogen` to bump `package.json`, update `CHANGELOG.md`, sync the Tauri app versions, create the release commit and tag, then push the result.
 
 ```bash
-pnpm release:patch
-pnpm release:minor
-pnpm release:major
+bun run release:patch
+bun run release:minor
+bun run release:major
 ```
 
 The release flow keeps these version fields aligned:
@@ -105,28 +102,7 @@ The release flow keeps these version fields aligned:
 You can sync the Tauri files to the current `package.json` version without creating a release:
 
 ```bash
-pnpm sync:tauri-version
+bun run sync:tauri-version
 ```
 
-The helper scripts live in `scripts/` and run as TypeScript files with Node 24, which is the version pinned by `.nvmrc`.
-
-## Important Notes For Non-pnpm Users
-
-- Prefer `pnpm` if you want the most predictable setup for this repository.
-- If a command in the docs uses `pnpm exec`, translate it to the equivalent runner for your package manager:
-  - Bun: `bunx`
-  - npm: `npx`
-  - Yarn: `yarn dlx` or `yarn exec`, depending on the command
-- If you want full non-`pnpm` support, you will likely need to update `.github/workflows/ci.yml`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, and `renovate.json` to match your chosen package manager.
-- If you move away from `pnpm`, also update `package.json` so the Vite override is top-level instead of nested under `pnpm`:
-
-```json
-{
-  "overrides": {
-    "vite": "npm:rolldown-vite@latest"
-  }
-}
-```
-
-- If you contribute back to this template, use `pnpm` so changes stay aligned with the checked-in package manager metadata.
-- If you hit dependency resolution or lockfile issues with Bun, npm, or Yarn, switch back to `pnpm` before debugging further.
+The helper scripts live in `scripts/` and run as TypeScript files with Bun.

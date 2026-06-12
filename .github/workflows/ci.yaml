@@ -3,34 +3,45 @@ name: CI
 on: push
 
 jobs:
-  ci:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install node
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
-          cache: pnpm
+          bun-version: 1.3.14
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Cache Nuxt build
+        uses: actions/cache@v5
+        with:
+          path: .nuxt
+          key: ${{ runner.os }}-nuxt-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nuxt-
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
 
-      - name: Lint
-        run: pnpm lint
+      - name: Format files
+        run: bun run fmt
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Lint files
+        run: bun run lint
 
-      - name: Build
-        run: pnpm build
+      - name: Run typecheck
+        run: bun run typecheck
+
+      - name: Build application
+        run: bun run build

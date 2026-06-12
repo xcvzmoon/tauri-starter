@@ -10,16 +10,16 @@
     "url": "git+https://github.com/xcvzmoon/tauri-starter.git"
   },
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "build": "bunx --bun nuxt build",
+    "dev": "bunx --bun nuxt dev",
+    "generate": "bunx --bun nuxt generate",
+    "preview": "bunx --bun nuxt preview",
+    "postinstall": "bunx --bun nuxt prepare",
+    "typecheck": "bunx --bun nuxt typecheck",
     "fmt": "run-p fmt:nuxt fmt:tauri",
-    "fmt:nuxt": "oxfmt",
+    "fmt:nuxt": "oxfmt && oxfmt --check",
     "fmt:tauri": "cd src-tauri && cargo fmt",
     "lint": "oxlint",
-    "typecheck": "nuxt typecheck",
     "prepare": "husky",
     "test": "vitest",
     "test:watch": "vitest --watch",
@@ -28,14 +28,14 @@
     "test:nuxt": "vitest --project nuxt",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "release:patch": "changelogen --patch --bump && pnpm release:finish",
-    "release:minor": "changelogen --minor --bump && pnpm release:finish",
-    "release:major": "changelogen --major --bump && pnpm release:finish",
+    "release:patch": "changelogen --patch --bump && bun run release:finish",
+    "release:minor": "changelogen --minor --bump && bun run release:finish",
+    "release:major": "changelogen --major --bump && bun run release:finish",
     "release:dry": "changelogen --dry",
     "release:finish": "run-s sync:tauri-version release:commit release:push",
-    "release:commit": "node scripts/create-release-commit.ts",
+    "release:commit": "bun scripts/create-release-commit.ts",
     "release:push": "git push --follow-tags",
-    "sync:tauri-version": "node scripts/sync-tauri-version.ts"
+    "sync:tauri-version": "bun scripts/sync-tauri-version.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.111",
@@ -52,6 +52,7 @@
     "@nuxt/test-utils": "^4.0.3",
     "@playwright/test": "^1.60.0",
     "@tauri-apps/cli": "^2.11.2",
+    "@types/bun": "^1.3.14",
     "@vitest/coverage-v8": "^4.1.8",
     "@vue/test-utils": "^2.4.10",
     "changelogen": "^0.6.2",
@@ -71,5 +72,8 @@
     "*.{js,jsx,ts,tsx,mjs,cjs,html,css,yml,yaml}": "oxfmt",
     "*.{js,jsx,ts,tsx,mjs,cjs}": "oxlint"
   },
-  "packageManager": "pnpm@11.5.0"
+  "overrides": {
+    "vite": "npm:rolldown-vite@latest"
+  },
+  "packageManager": "bun@1.3.14"
 }

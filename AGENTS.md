@@ -6,17 +6,17 @@ This is a Nuxt 4, Vue 3, TypeScript starter. Application code lives in `app/`: r
 
 ## Build, Test, and Development Commands
 
-Use `pnpm` as the package manager; the project declares `pnpm@11.1.1`.
+Use `bun` as the package manager; the project declares `bun @1.3.14`.
 
-- `pnpm dev`: start the local Nuxt dev server.
-- `pnpm build`: create a production build.
-- `pnpm generate`: generate static output.
-- `pnpm preview`: preview the built app.
-- `pnpm fmt`: run `oxfmt` and its formatting check.
-- `pnpm lint`: run `oxlint`.
-- `pnpm typecheck`: run Nuxt type checking.
-- `pnpm test`: run all Vitest projects.
-- `pnpm test:e2e`: run Playwright browser tests.
+- `bun run dev`: start the local Nuxt dev server.
+- `bun run build`: create a production build.
+- `bun run generate`: generate static output.
+- `bun run preview`: preview the built app.
+- `bun run fmt`: run `oxfmt` and its formatting check.
+- `bun run lint`: run `oxlint`.
+- `bun run typecheck`: run Nuxt type checking.
+- `bun run test`: run all Vitest projects.
+- `bun run test:e2e`: run Playwright browser tests.
 
 ## Coding Style & Naming Conventions
 
@@ -24,7 +24,7 @@ Use TypeScript and `<script setup lang="ts">` for Vue single-file components. Fo
 
 ## Testing Guidelines
 
-Use Vitest for unit and Nuxt-aware tests, with `@nuxt/test-utils` helpers such as `mountSuspended` when rendering Nuxt components. Name test files `*.test.ts` or `*.spec.ts`. Keep tests focused on observable behavior. Run targeted checks first, for example `pnpm test:unit -- test/unit/example.test.ts`, then broaden to `pnpm test`, `pnpm test:nuxt`, or `pnpm test:e2e` when behavior crosses boundaries.
+Use Vitest for unit and Nuxt-aware tests, with `@nuxt/test-utils` helpers such as `mountSuspended` when rendering Nuxt components. Name test files `*.test.ts` or `*.spec.ts`. Keep tests focused on observable behavior. Run targeted checks first, for example `bun run test:unit -- test/unit/example.test.ts`, then broaden to `bun run test`, `bun run test:nuxt`, or `bun run test:e2e` when behavior crosses boundaries.
 
 ## Commit & Pull Request Guidelines
 
@@ -42,11 +42,11 @@ Recent history follows Conventional Commit style, such as `docs: update ci badge
 
 ## Before Finishing
 
-- Run `pnpm run fmt` if you changed formatting significantly.
-- Run `pnpm run lint` or at least targeted `oxlint` on touched files.
+- Run `bun run fmt` if you changed formatting significantly.
+- Run `bun run lint` or at least targeted `oxlint` on touched files.
 - Run targeted tests when tests exist.
 - For runtime-sensitive changes, prefer a narrow smoke check over broad refactors.
-- If you changed build or runtime behavior, ensure `pnpm run build` still works.
+- If you changed build or runtime behavior, ensure `bun run build` still works.
 
 ## LLMS Links
 

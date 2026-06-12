@@ -1,28 +1,14 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { file, write } from 'bun';
 
-type PackageJson = {
-  version?: unknown;
-};
+import { version } from '../package.json';
+import tauriConfig from '../src-tauri/tauri.conf.json';
 
-type TauriConfig = {
-  version?: string;
-  [key: string]: unknown;
-};
+const ROOT = `${import.meta.dir}/..`;
+const CARGO_TOML_PATH = `${ROOT}/src-tauri/Cargo.toml`;
+const CARGO_LOCK_PATH = `${ROOT}/src-tauri/Cargo.lock`;
+const TAURI_CONFIG_PATH = `${ROOT}/src-tauri/tauri.conf.json`;
 
-const root = new URL('../', import.meta.url);
-const packageJsonPath = new URL('package.json', root);
-const cargoTomlPath = new URL('src-tauri/Cargo.toml', root);
-const cargoLockPath = new URL('src-tauri/Cargo.lock', root);
-const tauriConfigPath = new URL('src-tauri/tauri.conf.json', root);
-
-const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as PackageJson;
-const { version } = packageJson;
-
-if (typeof version !== 'string' || version.length === 0) {
-  throw new Error('package.json version must be a non-empty string.');
-}
-
-const cargoToml = await readFile(cargoTomlPath, 'utf8');
+const cargoToml = await file(CARGO_TOML_PATH).text();
 const packageNameMatch = cargoToml.match(/^name = "([^"]+)"$/m);
 
 if (!packageNameMatch) {
@@ -31,23 +17,18 @@ if (!packageNameMatch) {
 
 const cargoPackageName = packageNameMatch[1];
 
-await writeFile(cargoTomlPath, cargoToml.replace(/^version = "[^"]+"$/m, `version = "${version}"`));
+await write(CARGO_TOML_PATH, cargoToml.replace(/^version = "[^"]+"$/m, `version = "${version}"`));
 
-const cargoLock = await readFile(cargoLockPath, 'utf8');
-const cargoLockPackagePattern = new RegExp(
-  `(name = "${escapeRegExp(cargoPackageName)}"\\nversion = ")[^"]+(")`,
-);
+const cargoLock = await file(CARGO_LOCK_PATH).text();
+const pattern = `(name = "${escapeRegExp(cargoPackageName)}"\\nversion = ")[^"]+(")`;
+const cargoLockPackagePattern = new RegExp(pattern);
 
 if (!cargoLockPackagePattern.test(cargoLock)) {
   throw new Error(`Unable to find ${cargoPackageName} in src-tauri/Cargo.lock.`);
 }
 
-await writeFile(cargoLockPath, cargoLock.replace(cargoLockPackagePattern, `$1${version}$2`));
-
-const tauriConfig = JSON.parse(await readFile(tauriConfigPath, 'utf8')) as TauriConfig;
-tauriConfig.version = version;
-
-await writeFile(tauriConfigPath, `${JSON.stringify(tauriConfig, null, 2)}\n`);
+await write(CARGO_LOCK_PATH, cargoLock.replace(cargoLockPackagePattern, `$1${version}$2`));
+await write(TAURI_CONFIG_PATH, `${JSON.stringify({ ...tauriConfig, version }, null, 2)}\n`);
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

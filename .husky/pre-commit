@@ -1,1 +1,4 @@
-# pnpm test
+bun run fmt
+bun run lint
+bun run typecheck
+# bun run test
