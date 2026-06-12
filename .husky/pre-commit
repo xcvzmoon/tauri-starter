@@ -1,4 +1,4 @@
 bun run fmt
 bun run lint
-bun run typecheck
+bun run nuxt:typecheck
 # bun run test

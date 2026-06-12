@@ -41,7 +41,7 @@ jobs:
         run: bun run lint
 
       - name: Run typecheck
-        run: bun run typecheck
+        run: bun run nuxt:typecheck
 
-      - name: Build application
-        run: bun run build
+      - name: Build Nuxt application
+        run: bun run nuxt:build

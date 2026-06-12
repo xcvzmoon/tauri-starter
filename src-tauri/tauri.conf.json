@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:65432",
-    "beforeDevCommand": "bun run dev",
-    "beforeBuildCommand": "bun run generate"
+    "beforeDevCommand": "bun run nuxt:dev",
+    "beforeBuildCommand": "bun run nuxt:generate"
   },
   "app": {
     "windows": [
@@ -25,7 +25,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["dmg", "msi", "deb", "rpm", "appimage"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
